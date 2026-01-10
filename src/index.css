@@ -1,0 +1,41 @@
+@config "../tailwind.config.js";
+@import "tailwindcss";
+
+@layer utilities {
+  .theme-transition {
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease,
+      border-color 0.2s ease;
+  }
+}
+/* =========================
+   default (dark)
+   ========================= */
+:root {
+  --bg-color: #151515;
+  --bg-secondary: #1A1A1A;
+
+  --text-title: #ffffff;
+  --text-primary: #E0E0E0;
+  --text-secondary: #A0A0A0;
+
+  --accent-primary: #BB7039;
+  --accent-secondary: #8b552e;
+}
+
+/* =========================
+   light theme
+   ========================= */
+.light-theme {
+  --bg-color: #FAFAFA;
+  --bg-secondary: #F0F0F0;
+
+  --text-title: #1A1A1A;
+  --text-primary: #333333;
+  --text-secondary: #6B6B6B;
+
+  --accent-primary: #BB7039;
+  --accent-secondary: #8B552E;
+}
+
