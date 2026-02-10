@@ -39,3 +39,10 @@
   --accent-secondary: #8B552E;
 }
 
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE/Edge viejo */
+  scrollbar-width: none; /* Firefox */
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
