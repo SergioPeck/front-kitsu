@@ -8,6 +8,7 @@ export default {
       colors: {
         bg: "var(--bg-color)",
         "bg-secondary": "var(--bg-secondary)",
+        "bg-terciary": "var(--bg-terciary)",
 
         "text-title": "var(--text-title)",
         "text-primary": "var(--text-primary)",
