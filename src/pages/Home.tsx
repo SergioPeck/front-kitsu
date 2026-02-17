@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 type Manga = {
   id: string;
   title: string;
   coverImage: string;
+  slug:string;
 };
 
 type Chapter = {
@@ -17,11 +19,13 @@ type Banner = {
   imageUrl: string;
   isActive: boolean;
   sortOrder: number;
+  mangaSlug:string;
 };
 
 type Update = {
   id: string;
   title: string;
+  slug:string;
   coverImage: string;
   firstChapter?: Chapter | null;
   lastChapters?: Chapter[];
@@ -33,6 +37,7 @@ const SWIPE_THRESHOLD_PX = 40;
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export function Home() {
+  const navigate = useNavigate();
   const [banners, setBanners] = useState<Banner[]>([]);
   const [activeBannerIndex, setActiveBannerIndex] = useState(0);
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
@@ -67,6 +72,8 @@ export function Home() {
         setWeek(weekData.items || []);
         setMonth(monthData.items || []);
         setUpdates(updatesData.items || []);
+        console.log(weekData);
+        console.log(updatesData);
       } catch (e) {
         console.error(e);
       } finally {
@@ -126,8 +133,9 @@ export function Home() {
 
                 setTouchStartX(null);
               }}
-              // cuando conectes navegación:
-              // onClick={() => navigate(`/manga/${banners[activeBannerIndex].mangaId}`)}
+              onClick={() =>
+                navigate(`/manga/${banners[activeBannerIndex].mangaSlug}`)
+              }
             >
               <img
                 src={banners[activeBannerIndex].imageUrl}
@@ -175,7 +183,7 @@ export function Home() {
               tabIndex={0}
               role="button"
               aria-label={`Abrir ${m.title}`}
-              // onClick={() => navigate(`/manga/${m.id}`)}
+              onClick={() => navigate(`/manga/${m.slug}`)}
             >
               <img
                 src={m.coverImage}
@@ -201,7 +209,7 @@ export function Home() {
               tabIndex={0}
               role="button"
               aria-label={`Abrir ${m.title}`}
-              // onClick={() => navigate(`/manga/${m.id}`)}
+              onClick={() => navigate(`/manga/${m.slug}`)}
             >
               <img
                 src={m.coverImage}
@@ -233,12 +241,16 @@ export function Home() {
                   cursor-pointer transition-transform duration-200
                   hover:scale-105"
                 alt={manga.title}
+                onClick={() => navigate(`/manga/${manga.slug}`)}
               />
 
               <div className="flex-1 min-w-0">
-                <p className="text-sm text-text-primary font-medium truncate
+                <p
+                  className="text-sm text-text-primary font-medium truncate
                   cursor-pointer transition-transform duration-200
-                  hover:scale-[1.02]">
+                  hover:scale-[1.02]"
+                  onClick={() => navigate(`/manga/${manga.slug}`)}
+                >
                   {manga.title}
                 </p>
 
@@ -267,7 +279,7 @@ export function Home() {
                             : "",
                         ].join(" ")}
                         aria-label={`Abrir capítulo ${chap.chapterNumber}`}
-                        // onClick={(e) => { e.stopPropagation(); navigate(`/chapters/${chap.id}`); }}
+                        onClick={() => navigate(`/manga/${manga.slug}/cap-${chap.chapterNumber}`)}
                       >
                         Cap {chap.chapterNumber}
                       </button>

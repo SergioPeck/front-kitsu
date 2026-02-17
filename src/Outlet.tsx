@@ -2,14 +2,17 @@ import { Route, Routes } from "react-router-dom";
 import { Home } from "./pages/Home";
 import { Updates } from "./pages/Updates";
 import { Searcher } from "./pages/Searcher";
+import { Manga } from "./pages/Manga";
 import { getRoute } from "./routes/routes";
+
 
 export function Outlet() {
     const homeRoute = getRoute("home");
     const updatesRoute = getRoute("updates");
     const searchRoute = getRoute("search");
+    const mangaRoute = getRoute("manga");
 
-    if (!homeRoute || !updatesRoute || !searchRoute) {
+    if (!homeRoute || !updatesRoute || !searchRoute || !mangaRoute) {
         console.error("Navbar: rutas no encontradas");
         return null;
     }
@@ -18,6 +21,7 @@ export function Outlet() {
             <Route path={homeRoute.path} element={<Home/>}/>
             <Route path={updatesRoute.path} element={<Updates/>}/>
             <Route path={searchRoute.path} element={<Searcher/>}/>
+            <Route path={mangaRoute.path} element={<Manga/>}/>
         </Routes>
     );
 }
