@@ -85,7 +85,7 @@ export function Manga() {
           setChapters(
             Array.isArray(chaptersData.chapters) ? chaptersData.chapters : [],
           );
-          console.log(chaptersData)
+          console.log(chaptersData);
         } else {
           setChapters([]);
         }
@@ -105,32 +105,26 @@ export function Manga() {
     return () => controller.abort();
   }, [mangaSlug, apiBase]);
 
-  const firstChapterId = useMemo(() => {
+  const firstChapterNumber = useMemo(() => {
     if (chapters.length === 0) return null;
-    const sorted = [...chapters].sort(
-      (a, b) => a.chapterNumber - b.chapterNumber,
-    );
-    return sorted[0]?.id ?? null;
+    return Math.min(...chapters.map((c) => c.chapterNumber));
   }, [chapters]);
 
-  const lastChapterId = useMemo(() => {
+  const lastChapterNumber = useMemo(() => {
     if (chapters.length === 0) return null;
-    const sorted = [...chapters].sort(
-      (a, b) => a.chapterNumber - b.chapterNumber,
-    );
-    return sorted[sorted.length - 1]?.id ?? null;
+    return Math.max(...chapters.map((c) => c.chapterNumber));
   }, [chapters]);
 
-  const onOpenChapter = (chapterId: string) => {
-    navigate(`/chapters/${chapterId}`);
+  const onOpenChapter = (chapterNumber: number) => {
+    navigate(`/manga/${mangaSlug}/cap-${chapterNumber}`);
   };
 
   const onReadFirst = () => {
-    if (firstChapterId) onOpenChapter(firstChapterId);
+    if (firstChapterNumber != null) onOpenChapter(firstChapterNumber);
   };
 
   const onReadLast = () => {
-    if (lastChapterId) onOpenChapter(lastChapterId);
+    if (lastChapterNumber != null) onOpenChapter(lastChapterNumber);
   };
 
   if (loading) {
@@ -204,14 +198,18 @@ export function Manga() {
                   <span className="inline-flex items-center gap-2">
                     <span className="text-(--hero-muted)/60">Status</span>
                     <span className="inline-block size-2 rounded-full bg-bg-secondary/40" />
-                    <span className="text-(--hero-title)/85">{manga.status}</span>
+                    <span className="text-(--hero-title)/85">
+                      {manga.status}
+                    </span>
                   </span>
 
                   <span className="text-(--hero-title)/35">•</span>
 
                   <span className="inline-flex items-center gap-2">
                     <span className="text-(--hero-muted)/60">Origen</span>
-                    <span className="text-(--hero-title)/85">{manga.origin}</span>
+                    <span className="text-(--hero-title)/85">
+                      {manga.origin}
+                    </span>
                   </span>
                 </div>
 
@@ -229,11 +227,11 @@ export function Manga() {
                   <button
                     type="button"
                     onClick={onReadFirst}
-                    disabled={!firstChapterId}
+                    disabled={!firstChapterNumber}
                     className={[
                       "flex-1 rounded-lg border border-(--accent-primary) bg-amber-500 py-2.5 text-[13px] font-medium",
                       "shadow-[0_8px_18px_rgba(0,0,0,0.35)] transition active:scale-[0.99]",
-                      !firstChapterId
+                      !firstChapterNumber
                         ? "opacity-50 cursor-not-allowed"
                         : "cursor-pointer hover:brightness-110",
                     ].join(" ")}
@@ -246,11 +244,11 @@ export function Manga() {
                   <button
                     type="button"
                     onClick={onReadLast}
-                    disabled={!lastChapterId}
+                    disabled={!lastChapterNumber}
                     className={[
                       "flex-1 rounded-lg border border-(--accent-primary) bg-bg-secondary py-2.5 text-[13px] font-medium",
                       "shadow-[0_8px_18px_rgba(0,0,0,0.35)] transition active:scale-[0.99]",
-                      !lastChapterId
+                      !lastChapterNumber
                         ? "opacity-50 cursor-not-allowed"
                         : "cursor-pointer hover:brightness-110",
                     ].join(" ")}
@@ -285,7 +283,7 @@ export function Manga() {
                 <button
                   key={c.id}
                   type="button"
-                  onClick={() => onOpenChapter(c.id)}
+                  onClick={() => onOpenChapter(c.chapterNumber)}
                   className={[
                     "rounded-xl bg-bg-secondary border border-white/10 px-3 py-3 text-left",
                     "shadow-[0_10px_18px_rgba(0,0,0,0.35)] transition cursor-pointer",
