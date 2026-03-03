@@ -9,6 +9,7 @@ export const routes: AppRoute[] = [
   { id: "updates", path: "/updates", label: "Actualizaciones" },
   { id: "search", path: "/search", label: "Buscador" },
   { id: "manga", path: "/manga/:mangaSlug", label: "Manga" },
+  { id: "chapter", path: "/manga/:mangaSlug/:cap", label: "Chapter" },
 ];
 
 export function getRoute(id: string): AppRoute | undefined {
